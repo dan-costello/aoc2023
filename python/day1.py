@@ -2,11 +2,8 @@ with open("data/day1.txt") as f:
     data = f.read().splitlines()
 
 # Part 1
-chars = [[d for d in list(i) if d.isdigit()] for i in data]
-
-fl = []
-for l in chars:
-    fl.append(int(l[0] + l[-1]))
+nums = [[d for d in list(i) if d.isdigit()] for i in data]
+fl = [int(l[0] + l[-1]) for l in nums]
 
 print("Part 1: ", sum(fl))
 
