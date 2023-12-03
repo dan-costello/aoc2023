@@ -3,6 +3,8 @@ from functools import reduce
 from collections import defaultdict
 import operator
 
+
+# Data prep and helper functions
 with open("data/day3.txt") as f:
     data = f.read().splitlines()
 
@@ -15,11 +17,6 @@ def find_numbers(input):
     ]
 
 
-# Unique list of all symbols
-symbols = list(
-    set([char for line in data for char in line if not char.isdigit() and char != "."])
-)
-
 # to avoid indexing problems I am adding a line of periods to start
 # and a period to start and end of each line
 empty_line = "." * len(data[0])
@@ -29,6 +26,13 @@ data = ["." + line + "." for line in data]
 
 
 # Part 1
+
+# Unique list of all symbols
+symbols = list(
+    set([char for line in data for char in line if not char.isdigit() and char != "."])
+)
+
+
 valid_parts = []
 for index, line in enumerate(data):
     numbers = find_numbers(line)
