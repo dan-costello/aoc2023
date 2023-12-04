@@ -38,39 +38,27 @@ for index, line in enumerate(data):
     numbers = find_numbers(line)
     for num in numbers:
         value, start, end = num
-        # each time a valid number is found,
-        # search surrounding values for a symbol
-        prev = data[index - 1][start - 1 : end + 1]
-        line = data[index + 0][start - 1 : end + 1]
-        next = data[index + 1][start - 1 : end + 1]
-        all = prev + line + next
+        # build string of surrounding chars
+        all = ""
+        for offset in [-1, 0, 1]:
+            all += data[index + offset][start - 1 : end + 1]
         if any(symbol in all for symbol in symbols):
             valid_parts.append(value)
 
 print("Part 1: ", sum(valid_parts))
 
 # Part 2
-potential_gears = []
+gear_dict = defaultdict(list)
 for index, line in enumerate(data):
     numbers = find_numbers(line)
     for num in numbers:
         value, start, end = num
         # if star is found adjacent to number, log the number value and star index to compare with others
-        prev = data[index - 1][start - 1 : end + 1]
-        if "*" in prev:
-            potential_gears.append((value, (index - 1, start - 1 + prev.index("*"))))
-        line = data[index + 0][start - 1 : end + 1]
-        if "*" in line:
-            potential_gears.append((value, (index + 0, start - 1 + line.index("*"))))
-        next = data[index + 1][start - 1 : end + 1]
-        if "*" in next:
-            potential_gears.append((value, (index + 1, start - 1 + next.index("*"))))
-
-
-# create dict of stars/gears with index as key and adjacent parts as list
-gear_dict = defaultdict(list)
-for val, indices in potential_gears:
-    gear_dict[indices].append(val)
+        for offset in [-1, 0, 1]:
+            line = data[index + offset][start - 1 : end + 1]
+            if "*" in line:
+                indices = (index + offset, start - 1 + line.index("*"))
+                gear_dict[indices].append(value)
 
 # multiply together part numbers if part of length-2 array
 two_part_gears = [reduce(operator.mul, i) for i in gear_dict.values() if len(i) == 2]
