@@ -9,7 +9,6 @@ print("Part 1: ", sum(fl))
 
 # Part 2
 
-
 str_to_int = {
     "1": 1,
     "2": 2,
