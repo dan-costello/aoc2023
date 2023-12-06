@@ -57,7 +57,7 @@ for i in range(seed_start, min_location):
         if any(checks):
             corr = [i for i, val in enumerate(checks) if val == True][0]
             val = val - mps[corr].diff
-    for j in seed_maps:
-        if j[0] <= val <= j[1]:
+    for seed_start, seed_end in seed_maps:
+        if seed_start <= val <= seed_end:
             print("Part 2: ", i)
             exit()
