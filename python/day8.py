@@ -5,22 +5,15 @@ with open("data/day8.txt") as f:
     data = f.read().split("\n")
 
 
-def find_lcm(a, b):
-    # Calculate the GCD using the Euclidean algorithm
-    gcd = math.gcd(a, b)
-
-    # Calculate the LCM using the formula: LCM(a, b) = (a * b) / GCD(a, b)
-    lcm = (a * b) // gcd
-
-    return lcm
-
-
 def find_lcm_of_list(numbers):
     lcm = numbers[0]
     for i in range(1, len(numbers)):
-        lcm = find_lcm(lcm, numbers[i])
+        gcd = math.gcd(lcm, numbers[i])
+        lcm = (lcm * numbers[i]) // gcd
     return lcm
 
+
+instructions = [i for i in data[0]]
 
 node_dict = {}
 
@@ -33,8 +26,6 @@ for i in data[2:]:
     right = lr[1][1:-1]
     node_dict[name] = {"L": left, "R": right}
 
-
-instructions = [i for i in data[0]]
 
 # Part 1
 current_node = "AAA"
@@ -52,7 +43,6 @@ print("Part 1: ", moves)
 # Part 2
 a_nodes = [a for a in node_dict.keys() if a.endswith("A")]
 moves = 0
-fig = {}
 
 
 movecounts = []
