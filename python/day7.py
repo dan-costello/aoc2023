@@ -14,32 +14,28 @@ def get_winnings(hands):
 
 class Hand:
     def __init__(self, card):
-        self.card = card.split(" ")[0]
-        self.bid = int(card.split(" ")[1])
-        self.cardstrength = [card_strength.index(i) for i in card.split(" ")[0]]
-        self.counts = sorted(list(Counter(card.split(" ")[0]).values()), reverse=True)
-        self.countdict = dict(
-            sorted(
-                dict(Counter(self.cardstrength)).items(),
-                key=lambda item: item[0],
-                reverse=True,
-            )
-        )
+        self.card, bid = card.split(" ")
+        self.bid = int(bid)
+        self.card_list = [i for i in self.card]
+        self.cardstrength = [card_strength.index(i) for i in self.card_list]
+        self.countdict = {
+            k: v for k, v in sorted(Counter(self.cardstrength).items(), reverse=True)
+        }
+        self.counts = sorted(self.countdict.values(), reverse=True)
 
     def convert_jokers(self):
         sorted_dict = dict(
             sorted(self.countdict.items(), key=lambda item: item[1], reverse=True)
         )
-        # handle edge case of all jokers
         if sorted_dict == {9: 5}:
             sorted_dict = {12: 5}
-        max_card = [i for i in sorted_dict.keys() if i != 9][0]
+        max_card = next(i for i in sorted_dict.keys() if i != 9)
         jokers = self.countdict.get(9)
         if jokers and sorted_dict != {12: 5}:
-            self.countdict[max_card] = self.countdict[max_card] + jokers
+            self.countdict[max_card] += jokers
             del self.countdict[9]
-            self.counts = sorted([i for i in self.countdict.values()], reverse=True)
-        self.cardstrength = [j_card_strength.index(i) for i in self.card.split(" ")[0]]
+        self.counts = sorted(self.countdict.values(), reverse=True)
+        self.cardstrength = [j_card_strength.index(i) for i in self.card_list]
 
 
 # Part 1
