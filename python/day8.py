@@ -1,7 +1,8 @@
 import math
+import numpy as np
 
 # Import and Prep
-with open("data/day8.txt") as f:
+with open("data/day8test.txt") as f:
     data = f.read().split("\n")
 
 
